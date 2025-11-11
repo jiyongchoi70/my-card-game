@@ -19,8 +19,8 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const SUPABASE_SCORES_TABLE = process.env.SUPABASE_SCORES_TABLE || "card_flip_scores";
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  console.error("[create-supabase-config] 환경 변수 SUPABASE_URL 또는 SUPABASE_SERVICE_ROLE_KEY가 설정되어 있지 않습니다.");
-  process.exit(1);
+  console.warn("[create-supabase-config] 환경 변수가 설정되지 않아 supabase-config.php를 생성하지 않습니다. 런타임에 환경 변수를 직접 사용합니다.");
+  process.exit(0);
 }
 
 const targetPath = path.join(__dirname, "..", "server", "supabase-config.php");

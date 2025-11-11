@@ -27,12 +27,13 @@ README.md
    };
    ```
 
-2. **Generate `server/supabase-config.php`**  
+2. **Generate `server/supabase-config.php` (선택 사항)**  
    - 환경 변수 `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SCORES_TABLE`(선택 사항)을 설정한 뒤 아래 명령을 실행합니다.
      ```bash
      node scripts/create-supabase-config.js
      ```
    - Vercel 등 배포 환경에서는 동일한 환경 변수를 등록하고 Build Command에 `npm run build`(또는 `node scripts/create-supabase-config.js`)를 추가하면 배포 시 자동으로 생성됩니다.
+   - 빌드 단계에서 파일을 만들지 않아도 `server/supabase-api.php`가 런타임 환경 변수에서 값을 직접 읽도록 되어 있으므로, 환경 변수만 등록해도 동작합니다.
 
 3. **Prepare Supabase**
    - Create a table named `scores`:

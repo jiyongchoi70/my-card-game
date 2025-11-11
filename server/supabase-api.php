@@ -18,16 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $configPath = __DIR__ . '/supabase-config.php';
-if (!file_exists($configPath)) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Supabase configuration missing']);
-    exit;
-}
+$configFromFile = file_exists($configPath) ? require $configPath : [];
 
-$config = require $configPath;
-$supabaseUrl = rtrim($config['url'] ?? '', '/');
-$serviceRoleKey = $config['service_role_key'] ?? '';
-$scoresTable = $config['scores_table'] ?? 'card_flip_scores';
+$supabaseUrl = rtrim($configFromFile['url'] ?? getenv('SUPABASE_URL') ?: '', '/');
+$serviceRoleKey = $configFromFile['service_role_key'] ?? getenv('SUPABASE_SERVICE_ROLE_KEY') ?: '';
+$scoresTable = $configFromFile['scores_table'] ?? getenv('SUPABASE_SCORES_TABLE') ?: 'card_flip_scores';
 
 if (!$supabaseUrl || !$serviceRoleKey) {
     http_response_code(500);
