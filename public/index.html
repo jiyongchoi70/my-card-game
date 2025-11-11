@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>카드 뒤집기 게임</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>카드 뒤집기 메모리 게임</h1>
+    </header>
+
+    <main class="app-main">
+      <section class="game-controls">
+        <div class="player-input">
+          <label for="player-name">플레이어 이름</label>
+          <input id="player-name" type="text" placeholder="이름을 입력하세요" maxlength="24" />
+        </div>
+        <div class="control-buttons">
+          <button id="start-button" class="primary">게임 시작</button>
+          <button id="reset-button" class="secondary" disabled>다시 시작</button>
+          <button id="hint-button" class="secondary" disabled>힌트</button>
+        </div>
+        <div class="status">
+          <span id="move-count">이동: 0</span>
+          <span id="timer">시간: 00:00</span>
+        </div>
+      </section>
+
+      <section class="game-board" id="game-board" aria-label="카드 게임 보드"></section>
+
+      <section class="scoreboard">
+        <h2>최근 기록</h2>
+        <ol id="score-list" aria-live="polite"></ol>
+      </section>
+    </main>
+
+    <template id="card-template">
+      <button class="card" type="button" aria-label="카드" data-card-value="">
+        <div class="card-inner">
+          <span class="card-face card-front"></span>
+          <span class="card-face card-back"></span>
+        </div>
+      </button>
+    </template>
+
+    <dialog id="result-dialog">
+      <h2>축하합니다!</h2>
+      <p id="result-message"></p>
+      <form method="dialog">
+        <button class="primary">닫기</button>
+      </form>
+    </dialog>
+
+    <dialog id="hint-dialog">
+      <h2>GPT-4o 힌트</h2>
+      <p id="hint-message"></p>
+      <form method="dialog">
+        <button class="primary">확인</button>
+      </form>
+    </dialog>
+
+    <script src="config.js" defer></script>
+    <script src="game.js" defer></script>
+  </body>
+</html>
