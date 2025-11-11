@@ -22,8 +22,8 @@ README.md
    Copy `public/config.example.js` and update the values. 기본 설정은 점수 API 프록시와 GPT 힌트 엔드포인트만 포함합니다.
    ```js
    window.APP_CONFIG = {
-     scoreEndpoint: "../server/supabase-api.php",
-     hintEndpoint: "../server/gpt-helper.php"
+     scoreEndpoint: "../api/supabase-api.php",
+     hintEndpoint: "../api/gpt-helper.php"
    };
    ```
 
@@ -33,7 +33,7 @@ README.md
      node scripts/create-supabase-config.js
      ```
    - Vercel 등 배포 환경에서는 동일한 환경 변수를 등록하고 Build Command에 `npm run build`(또는 `node scripts/create-supabase-config.js`)를 추가하면 배포 시 자동으로 생성됩니다.
-   - 빌드 단계에서 파일을 만들지 않아도 `server/supabase-api.php`가 런타임 환경 변수에서 값을 직접 읽도록 되어 있으므로, 환경 변수만 등록해도 동작합니다.
+   - 빌드 단계에서 파일을 만들지 않아도 `api/supabase-api.php`가 런타임 환경 변수에서 값을 직접 읽도록 되어 있으므로, 환경 변수만 등록해도 동작합니다.
 
 3. **Prepare Supabase**
    - Create a table named `scores`:
@@ -63,7 +63,7 @@ README.md
 
 5. **Run Locally / Deploy**
    - Serve the `public/` directory with any static server (e.g., `npx serve public`).
-   - Host `server/gpt-helper.php` on a PHP-capable server. If using a different origin, review CORS requirements.
+   - Vercel에 배포할 경우 `vercel.json`이 `api/*.php`를 `vercel-php` 런타임으로 실행하도록 설정되어 있습니다. 환경 변수는 Vercel Dashboard에서 등록한 뒤 재배포하세요. 다른 호스팅을 사용한다면 `api/` 디렉터리에 있는 PHP 파일을 실행할 수 있는 서버 구성이 필요합니다.
 
 ## Usage
 

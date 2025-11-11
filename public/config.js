@@ -1,4 +1,4 @@
 ﻿window.APP_CONFIG = {
-  scoreEndpoint: "../server/supabase-api.php",
-  hintEndpoint: "../server/gpt-helper.php"
+  scoreEndpoint: "../api/supabase-api.php",
+  hintEndpoint: "../api/gpt-helper.php"
 };
