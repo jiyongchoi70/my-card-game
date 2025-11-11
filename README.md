@@ -19,16 +19,22 @@ README.md
 ## Setup
 
 1. **Create `public/config.js`**  
-   Copy `public/config.example.js` and update the values:
+   Copy `public/config.example.js` and update the values. 기본 설정은 점수 API 프록시와 GPT 힌트 엔드포인트만 포함합니다.
    ```js
    window.APP_CONFIG = {
-     supabaseUrl: "https://<project-id>.supabase.co",
-     supabaseAnonKey: "<Supabase anon key>",
+     scoreEndpoint: "../server/supabase-api.php",
      hintEndpoint: "../server/gpt-helper.php"
    };
    ```
 
-2. **Prepare Supabase**
+2. **Generate `server/supabase-config.php`**  
+   - 환경 변수 `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SCORES_TABLE`(선택 사항)을 설정한 뒤 아래 명령을 실행합니다.
+     ```bash
+     node scripts/create-supabase-config.js
+     ```
+   - Vercel 등 배포 환경에서는 동일한 환경 변수를 등록하고 Build Command에 `npm run build`(또는 `node scripts/create-supabase-config.js`)를 추가하면 배포 시 자동으로 생성됩니다.
+
+3. **Prepare Supabase**
    - Create a table named `scores`:
      ```sql
      create table if not exists scores (
@@ -50,11 +56,11 @@ README.md
        for select using (true);
      ```
 
-3. **Configure OpenAI**
+4. **Configure OpenAI**
    - Set environment variable `OPENAI_API_KEY` on the server that runs PHP.
    - Ensure PHP 8.1+ and the curl extension are available.
 
-4. **Run Locally / Deploy**
+5. **Run Locally / Deploy**
    - Serve the `public/` directory with any static server (e.g., `npx serve public`).
    - Host `server/gpt-helper.php` on a PHP-capable server. If using a different origin, review CORS requirements.
 
