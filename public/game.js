@@ -181,7 +181,9 @@
       const button = getCardButton(i);
       if (button) {
         button.classList.add("is-matched");
-        button.setAttribute("disabled", "true");
+        button.classList.add("is-locked");
+        button.setAttribute("aria-disabled", "true");
+        button.tabIndex = -1;
       }
     });
 

@@ -331,10 +331,15 @@ button:not(:disabled):hover::after {
   transform: rotateY(180deg);
 }
 
+.card.is-locked {
+  pointer-events: none;
+}
+
 .card.is-matched .card-front {
   background: linear-gradient(135deg, var(--success), #39c494);
   color: rgba(12, 35, 28, 0.85);
   animation: matchPulse 1.1s ease both;
+  opacity: 1;
 }
 
 .card.is-matched .card-front::after {
@@ -344,6 +349,10 @@ button:not(:disabled):hover::after {
   border-radius: 16px;
   border: 2px solid rgba(255, 255, 255, 0.5);
   opacity: 0.6;
+}
+
+.card.is-matched .card-back {
+  opacity: 0;
 }
 
 .card:disabled {
