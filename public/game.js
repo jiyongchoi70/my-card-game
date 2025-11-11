@@ -16,16 +16,13 @@
   const cardTemplate = document.getElementById("card-template");
 
   const fallBackConfig = {
-    supabaseUrl: null,
-    supabaseAnonKey: null,
+    scoreEndpoint: null,
     hintEndpoint: null
   };
 
   const config = window.APP_CONFIG ? { ...fallBackConfig, ...window.APP_CONFIG } : fallBackConfig;
-  const canUseSupabase = Boolean(config.supabaseUrl && config.supabaseAnonKey);
+  const canUseSupabase = Boolean(config.scoreEndpoint);
   const canUseHint = Boolean(config.hintEndpoint);
-  const SCORES_TABLE = "card_flip_scores";
-
   const CARD_FACES = [
     "\uD83C\uDF4E",
     "\uD83C\uDF4A",
@@ -239,19 +236,24 @@
         elapsed_seconds: Math.round(durationMs / 1000)
       };
 
-      const response = await fetch(`${config.supabaseUrl}/rest/v1/${SCORES_TABLE}`, {
+      const response = await fetch(config.scoreEndpoint, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          apikey: config.supabaseAnonKey,
-          Authorization: `Bearer ${config.supabaseAnonKey}`,
-          Prefer: "return=minimal"
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          action: "submitScore",
+          ...payload
+        })
       });
 
       if (!response.ok) {
         throw new Error(`Supabase insert failed (${response.status})`);
+      }
+
+      const result = await response.json().catch(() => null);
+      if (!result || result.ok !== true) {
+        throw new Error("Supabase insert failed (invalid response)");
       }
 
       fetchScores();
@@ -269,16 +271,12 @@
 
     try {
       scoreListEl.innerHTML = "<li class=\"empty\">기록을 불러오는 중...</li>";
-      const url = new URL(`${config.supabaseUrl}/rest/v1/${SCORES_TABLE}`);
-      url.searchParams.set("select", "*");
-      url.searchParams.set("order", "completed_at.desc");
-      url.searchParams.set("limit", "10");
-
-      const response = await fetch(url, {
+      const response = await fetch(config.scoreEndpoint, {
+        method: "POST",
         headers: {
-          apikey: config.supabaseAnonKey,
-          Authorization: `Bearer ${config.supabaseAnonKey}`
-        }
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ action: "fetchScores" })
       });
 
       if (!response.ok) {
@@ -286,6 +284,9 @@
       }
 
       const rows = await response.json();
+      if (!Array.isArray(rows)) {
+        throw new Error("Supabase fetch failed (unexpected response)");
+      }
       renderScores(rows);
     } catch (error) {
       console.error(error);
