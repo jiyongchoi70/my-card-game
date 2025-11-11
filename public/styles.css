@@ -328,6 +328,7 @@ button:not(:disabled):hover::after {
 
 .card.is-matched .card-inner {
   box-shadow: 0 24px 48px rgba(43, 253, 164, 0.45);
+  transform: rotateY(180deg);
 }
 
 .card.is-matched .card-front {
